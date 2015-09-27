@@ -3,12 +3,11 @@
 url = ARGV[0]
 
 #puts url
-
+require 'rubygems'
 require 'nokogiri'
-require 'HTTParty'
-
-response = HTTParty.get(url)
-node = Nokogiri.HTML(response.parsed_response)
+require 'open-uri'
+require 'json'
+node = Nokogiri.HTML(open(url))
 
 price = node.xpath("/html/body[@id='PageVIP']/div[@id='MainContainer']/div[@class='layout-2']/div[@class='col-1']/div[@id='itemdetails']/div[@class='col-2']/table[@class='ad-attributes']/tr[2]/td/div/span/strong").text()
 date = node.xpath("/html/body[@id='PageVIP']/div[@id='MainContainer']/div[@class='layout-2']/div[@class='col-1']/div[@id='itemdetails']/div[@class='col-2']/table[@class='ad-attributes']/tr[1]/td").text()
