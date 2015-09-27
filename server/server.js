@@ -22,6 +22,7 @@ var userSchema = mongoose.Schema({
 	price: String,
 	address: String,
 	date: String,
+	url: String,
 	bidders: [mongoose.Schema.Types.Mixed]
 });
 
@@ -63,6 +64,7 @@ app.get('/api/url', function(req, res) { //hosting this index.html page for tesg
 				price: payload.price,
 				address: payload.addr,
 				date: payload.date,
+				url: payload.url,
 			});
 			user.save(function(err) {
 				if (err) {
