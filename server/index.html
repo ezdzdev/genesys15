@@ -113,6 +113,19 @@
            :(</a>
       </div>
     </div>
+
+    <div id="show" class="modal">
+      <div class="modal-content">
+        <h4>Success!</h4>
+        <p>Add extension <strong id="lol"></strong> to your ad</p>
+      </div>
+
+      <div class="modal-footer">
+        <a id="rofl" href="#!"
+           class="modal-action modal-close waves-effect waves-green btn red">
+           :(</a>
+      </div>
+    </div>
   </body>
 </html>
 
@@ -142,7 +155,10 @@
       url: '/api/url',
       data: { url: $('#link').val() },
       success: function(data) {
-        grab()
+        $('#lol').html(data)
+        $('#rofl').on('click', function() {
+          grab();
+        })
       },
       error: function(data) {
         $('#error').openModal();
@@ -183,7 +199,8 @@
     var str = '<div class="collection">'
     if (data.length > 0) {
       for (var i = 0; i < data.length; i++) {
-        str += '<a href="#!" class="collection-item">' + data[i].name;
+        str += '<a href="#!" class="collection-item">' + data[i].tel;
+        str += '<span class="badge right">' + data[i].time.substring(0,16) + '</span>'
         str += '</a>';
       }
     } else {
@@ -202,7 +219,7 @@
       str += '<li>';
       str += '<div class="collapsible-header">' + data[i].name;
       str += '<a class="waves-effect waves-light btn right" href="'
-      str += data.url + '">View</a>';
+      str += data[i].url + '">View</a>';
       str += badge(data[i]);
       str += '</div><div class="collapsible-body">';
       str += collection(data[i].bidders);
