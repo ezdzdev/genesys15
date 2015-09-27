@@ -5,7 +5,8 @@ var app = express();
 
 app.get('/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
-	res.sendFile(__dirname + "/index.html");
+	res.send("I am senfing something");
+	//res.sendFile(__dirname + "/index.html");
 
 });
 app.get('/index.js', function(req, res) { //hosting the testing js file for tesging the client side. please comment out when running the API
