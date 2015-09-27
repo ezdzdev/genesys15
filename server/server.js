@@ -29,11 +29,11 @@ var User = mongoose.model('User', userSchema);
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
-}
+})
 
 app.get('/new', function(req, res) {
   res.sendFile(__dirname + '/new.html');
-}
+})
 
 app.get('/api/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
