@@ -53,7 +53,8 @@ app.get('/api/url', function(req, res) { //hosting this index.html page for tesg
 	var bash_command = "ruby scripts/scrap.rb " + url;
 
 	child = exec(bash_command, function(error, stdout, stderr) {
-		console.log(stdout);
+		console.log("error:" + error);
+		console.log("this is :" + stdout);
 		var payload = JSON.parse(stdout);
 		if (!error) {
 			var user = new User({

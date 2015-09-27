@@ -152,7 +152,7 @@
       complete: function() {
         $.ajax({
           type: 'GET',
-          url: '/test.json',
+          url: '/api/',
           success: function(data) {
             setTimeout(function() {
               $('#loader').velocity('transition.slideUpOut', {
