@@ -14,6 +14,13 @@ var sys = require('sys');
 var exec = require('child_process').exec;
 var child;
 
+app.use(function (req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next()
+});
+
 
 var id_global = 1000;
 
@@ -29,15 +36,15 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema);
 
-app.get('/', function(req, nocache, res) {
+app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/new', function(req, nocache, res) {
+app.get('/new', function(req, res) {
 	res.sendFile(__dirname + '/new.html');
 });
 
-app.get('/api/', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.find({}, function(err, users) {
 		if (err) {
@@ -49,7 +56,7 @@ app.get('/api/', function(req, nocache, res) { //hosting this index.html page fo
 	});
 });
 
-app.get('/api/url', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/url', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var url = req.query.url;
 	var bash_command = "ruby scripts/scrap.rb " + url;
@@ -80,7 +87,7 @@ app.get('/api/url', function(req, nocache, res) { //hosting this index.html page
 	});
 });
 
-app.get('/api/get', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/get', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -98,7 +105,7 @@ app.get('/api/get', function(req, nocache, res) { //hosting this index.html page
 	});
 });
 
-app.get('/api/create', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var user = new User({
 		id: id_global,
@@ -117,7 +124,7 @@ app.get('/api/create', function(req, nocache, res) { //hosting this index.html p
 	});
 });
 
-app.get('/api/addBid', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/addBid', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -149,7 +156,7 @@ app.get('/api/addBid', function(req, nocache, res) { //hosting this index.html p
 
 });
 
-app.get('/api/id_exists', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/id_exists', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -177,7 +184,7 @@ app.get('/api/id_exists', function(req, nocache, res) { //hosting this index.htm
 	});
 });
 
-app.get('/api/text', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/text', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -187,23 +194,15 @@ app.get('/api/text', function(req, nocache, res) { //hosting this index.html pag
 
 			var message = "A buyer would like to puchase: " + user.name + "for" + user.price + ". Please contact" + req.query.from;
 			var number = "6478655555";
-			var request = "http://69.204.255.92/api/text/send?to="+4163890053+"&msg="+message;
+			var request = "http://69.204.255.92/api/text/send?to="+number+"&msg="+message;
 
 			requestify.get(request)
 				.then(function(response) {
 					// Get the response body (JSON parsed or jQuery object for XMLs)
 					console.log(request);
 					res.send("ok");
-
 				});
 		}
 
 	});
 });
-
-function nocache(req, res, next) {
-	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-	res.header('Expires', '-1');
-	res.header('Pragma', 'no-cache');
-	next();
-}
