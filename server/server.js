@@ -27,11 +27,11 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema);
 
-app.get('/', function(req, res)) {
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 }
 
-app.get('/new', function(req, res)) {
+app.get('/new', function(req, res) {
   res.sendFile(__dirname + '/new.html');
 }
 
