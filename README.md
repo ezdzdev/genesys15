@@ -2,7 +2,9 @@ server API:
 
 GET info:
 
-HTTP GET Request
+HTTP GET Request:
+
+URL: /get
 
 QUERY PARAMETERS
 
@@ -27,6 +29,8 @@ Create info:
 
 HTTP POST Request
 
+URL: /create
+
 QUERY PARAMETERS
 
 Name		Type	Description
@@ -43,6 +47,8 @@ EXT (just an integer that represents the user id/extention)
 add bidder: 
 
 HTTP POST Request
+
+URL: /add_bid
 
 QUERY PARAMETERS
 

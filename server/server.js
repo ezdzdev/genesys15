@@ -1,7 +1,14 @@
 //socket IO and express setup
+var http = require('http');
 var express = require('express');
 var port = 3000;
 var app = express();
+var server = http.createServer(app);
+server.listen(port);  //listen on port 80
+
+var mongoose = require('mongoose');
+//mongoose.connect('mongodb://localhost/test');
+
 
 app.get('/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
@@ -9,13 +16,24 @@ app.get('/', function(req, res) { //hosting this index.html page for tesging the
 	//res.sendFile(__dirname + "/index.html");
 
 });
-app.get('/index.js', function(req, res) { //hosting the testing js file for tesging the client side. please comment out when running the API
 
-	res.sendFile(__dirname + "/index.js");
+app.get('/get', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+
+	res.send("I am senfing something");
+	//res.sendFile(__dirname + "/index.html");
 
 });
-app.get('/gimme_j_querry', function(req, res) { //hosting the testing js file for tesging the client side. please comment out when running the API
 
-	res.sendFile(__dirname + "/client_side_libs/jquery-2.1.1.js");
+app.post('/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+
+	res.send("I am senfing something");
+	//res.sendFile(__dirname + "/index.html");
+
+});
+
+app.get('/addBid', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+
+	res.send("I am senfing something");
+	//res.sendFile(__dirname + "/index.html");
 
 });
