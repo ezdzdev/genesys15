@@ -204,6 +204,12 @@ app.get('/api/text', function(req, res) { //hosting this index.html page for tes
 					console.log(request);
 					var now = moment();
 					var formatted = now.format('YYYY-MM-DD HH:mm:ss Z');
+					var phoneNumber = req.query.from;
+
+					if (req.query.from && req.query.from.indexOf('+1') === 0) {
+						phoneNumber = req.query.from.substring(2);
+					}
+					
 					user.bidders.push({
 						name: "same name",
 						tel: req.query.from,
