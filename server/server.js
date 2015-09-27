@@ -5,6 +5,7 @@ var port = 80;
 var app = express();
 var server = http.createServer(app);
 server.listen(port); //listen on port 80
+var requestify = require('requestify');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
@@ -29,11 +30,11 @@ var userSchema = mongoose.Schema({
 var User = mongoose.model('User', userSchema);
 
 app.get('/', function(req, nocache, res) {
-  res.sendFile(__dirname + '/index.html');
+	res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/new', function(req, nocache, res) {
-  res.sendFile(__dirname + '/new.html');
+	res.sendFile(__dirname + '/new.html');
 });
 
 app.get('/api/', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
@@ -159,12 +160,16 @@ app.get('/api/id_exists', function(req, nocache, res) { //hosting this index.htm
 			res.send("not_ok");
 		} else {
 
-			if(user){
+			if (user) {
 
-				res.send({result:"true"});
-			}else{
+				res.send({
+					result: "true"
+				});
+			} else {
 
-				res.send({result:"false"});
+				res.send({
+					result: "false"
+				});
 			}
 
 		}
@@ -172,9 +177,33 @@ app.get('/api/id_exists', function(req, nocache, res) { //hosting this index.htm
 	});
 });
 
+app.get('/api/text', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+
+	User.findOne({
+		id: req.query.id
+	}, function(err, user) {
+
+		if (!err) {
+
+			var message = "A buyer would like to puchase: " + user.name + "for" + user.price + ". Please contact" + req.query.from;
+			var number = "6478655555";
+			var request = "http://69.204.255.92/api/text/send?to="+4163890053+"&msg="+message;
+
+			requestify.get(request)
+				.then(function(response) {
+					// Get the response body (JSON parsed or jQuery object for XMLs)
+					console.log(request);
+					res.send("ok");
+
+				});
+		}
+
+	});
+});
+
 function nocache(req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next();
+	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+	res.header('Expires', '-1');
+	res.header('Pragma', 'no-cache');
+	next();
 }
