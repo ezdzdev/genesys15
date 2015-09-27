@@ -20,7 +20,7 @@ var userSchema = mongoose.Schema({
 	id: Number,
 	name: String,
 	address: String,
-	bidder: Array
+	bidders: [mongoose.Schema.Types.Mixed]
 });
 
 var User = mongoose.model('User', userSchema);
@@ -28,31 +28,48 @@ var User = mongoose.model('User', userSchema);
 
 app.get('/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
-	res.send("I am senfing something");
-	//res.sendFile(__dirname + "/index.html");
+	User.find({}, function(err, users) {
+		if (err) {
+			res.send("not_ok");
+		} else {
 
+			res.send(users);
+		}
+	});
 });
 
 app.get('/get', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
-	res.send("I am senfing something");
-	//res.sendFile(__dirname + "/index.html");
+	User.findOne({
+		id: req.query.id
+	}, function(err, user) {
 
+		if (err) {
+
+			res.send("not_ok");
+		} else {
+
+			res.send(user);
+			console.log(user);
+		}
+
+	});
 });
 
 app.get('/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var user = new User({
-		id: req.id_global,
-		name: req.name,
-		address: req.address
+		id: id_global,
+		name: req.query.name,
+		address: req.query.address
 	});
 
 	user.save(function(err) {
-		if(err){
+		if (err) {
 			res.send("not_ok");
-		}else{
-			res.send(id_global);
+		} else {
+			res.send(id_global.toString());
+			console.log(user);
 			id_global++;
 		}
 	});
@@ -60,7 +77,32 @@ app.get('/create', function(req, res) { //hosting this index.html page for tesgi
 
 app.get('/addBid', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
-	res.send("I am senfing something");
-	//res.sendFile(__dirname + "/index.html");
+	User.findOne({
+		id: req.query.id
+	}, function(err, user) {
+
+		if (err) {
+
+			res.send("not_ok");
+		} else {
+
+			user.bidders.push({
+				name: req.query.name,
+				address: req.query.address,
+				price: req.query.price
+			});
+
+			user.save(function(err) {
+				if (err) {
+					res.send("not_ok");
+				} else {
+					res.send(user);
+					console.log(user);
+				}
+			});
+
+		}
+
+	});
 
 });
