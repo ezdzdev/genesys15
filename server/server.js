@@ -192,7 +192,7 @@ app.get('/api/text', function(req, res) { //hosting this index.html page for tes
 
 		if (!err) {
 
-			var message = "A buyer would like to puchase: " + user.name + "for" + user.price + ". Please contact" + req.query.from;
+			var message = "A buyer would like to puchase: " + user.name + "for" + user.price + ". Please contact: " + req.query.from;
 			var number = "6478655555";
 			var request = "http://69.204.255.92/api/text/send?to="+number+"&msg="+message;
 
