@@ -23,8 +23,12 @@
       #loader { display: none; width: 25%; position: absolute;
         top: 0; bottom: 0; left: 0; right: 0; margin: auto;}
       #add { display: none; position: absolute; bottom: 50px; left: 50px; }
-      #url { display: none; position: absolute; bottom: 18px; left: 126px; width: 0;  }
-
+      #url { display: none; position: absolute; bottom: 18px; left: 120px; width: 0;  }
+      .collapsible-header .btn {
+        margin-top: 5px;
+        height: 31px;
+        line-height: 31px;
+      }
       /* label focus color */
       .input-field input.validate:focus + label {
         color: #9c27b0;
@@ -128,17 +132,17 @@
 
   $('#add').on('click', function() {
     event.preventDefault();
-    $('#url').css('display', 'block').velocity({width: 800}, 500);
+    $('#url').css('display', 'block').velocity({width: window.innerWidth - 226}, 500);
   })
 
   $('#new').on('click', function() {
     event.preventDefault();
     $.ajax({
-      type: 'POST',
+      type: 'GET',
       url: '/api/url',
       data: { url: $('#link').val() },
       success: function(data) {
-        grab(id);
+        grab()
       },
       error: function(data) {
         $('#error').openModal();
@@ -147,29 +151,30 @@
   });
 
   function grab(id) {
+    $('#content').css('display','none');
     $('#loader').velocity('transition.fadeIn', {
       duration: EXIT_DELAY,
       complete: function() {
-        $.ajax({
-          type: 'GET',
-          url: '/api/',
-          success: function(data) {
-            setTimeout(function() {
+        setTimeout(function() {
+          $.ajax({
+            type: 'GET',
+            url: '/api/',
+            success: function(data) {
               $('#loader').velocity('transition.slideUpOut', {
                 duration: EXIT_DELAY,
                 complete: function() {
-                  $('#content').append(collapsible(data));
+                  $('#content').html(collapsible(data));
                   $('.collapsible').collapsible();
                   $('#content').velocity('transition.slideDownIn', ENTER_DELAY);
                   $('#add').velocity('transition.slideDownIn', ENTER_DELAY);
                 }
               });
-            }, MANUAL_DELAY);
-          },
-          error: function(data) {
-            $('#error').openModal();
-          }
-        })
+            },
+            error: function(data) {
+              $('#error').openModal();
+            }
+          });
+        }, MANUAL_DELAY);
       }
     });
   }
@@ -196,9 +201,10 @@
     for (var i = 0; i < data.length; i++) {
       str += '<li>';
       str += '<div class="collapsible-header">' + data[i].name;
+      str += '<a class="waves-effect waves-light btn right" href="'
+      str += data.url + '">View</a>';
       str += badge(data[i]);
       str += '</div><div class="collapsible-body">';
-
       str += collection(data[i].bidders);
       str += '</div></li>';
     }

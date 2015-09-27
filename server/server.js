@@ -27,15 +27,15 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema);
 
-app.get('/', function(req, res) {
+app.get('/', function(req, nocache, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/new', function(req, res) {
+app.get('/new', function(req, nocache, res) {
   res.sendFile(__dirname + '/new.html');
 });
 
-app.get('/api/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.find({}, function(err, users) {
 		if (err) {
@@ -47,7 +47,7 @@ app.get('/api/', function(req, res) { //hosting this index.html page for tesging
 	});
 });
 
-app.get('/api/url', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/url', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var url = req.query.url;
 	var bash_command = "ruby scripts/scrap.rb " + url;
@@ -77,7 +77,7 @@ app.get('/api/url', function(req, res) { //hosting this index.html page for tesg
 	});
 });
 
-app.get('/api/get', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/get', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -95,7 +95,7 @@ app.get('/api/get', function(req, res) { //hosting this index.html page for tesg
 	});
 });
 
-app.get('/api/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/create', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var user = new User({
 		id: id_global,
@@ -114,7 +114,7 @@ app.get('/api/create', function(req, res) { //hosting this index.html page for t
 	});
 });
 
-app.get('/api/addBid', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/addBid', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -146,7 +146,7 @@ app.get('/api/addBid', function(req, res) { //hosting this index.html page for t
 
 });
 
-app.get('/api/id_exists', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/id_exists', function(req, nocache, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -169,3 +169,10 @@ app.get('/api/id_exists', function(req, res) { //hosting this index.html page fo
 
 	});
 });
+
+function nocache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}
