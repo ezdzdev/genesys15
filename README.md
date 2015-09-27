@@ -1,20 +1,22 @@
-server API:
+#Server API
 
-GET info:
+##GET info
 
-HTTP GET Request:
 
-URL: /get
+###HTTP GET Request:
+
+####URL: /get
 
 QUERY PARAMETERS
 
-Name		Type	Description
-id			int 	identifier (and extention)
+* Name		Type	Description
+* id			int 	identifier (and extention)
 
-Response:
+####Response:
 
 Status-Code: 200 OK
 
+````
 {
   "name" : SELLER_NAME
   "price" : PRICE_INT
@@ -24,23 +26,25 @@ Status-Code: 200 OK
 					  "price" : price
 					}...]
 }
+````
 
-Create info: 
+##Create info: 
 
 HTTP POST Request
 
-URL: /create
+####URL: /create
 
 QUERY PARAMETERS
 
-Name		Type	Description
-name		string 	identifier (and extention)
-price       int     price of item
-url         string  ad url
+| Name	|	Type	|Description|
+|-------|-----------|-----------|
+| name	|	string 	|identifier (and extention)|
+| price |      int     |price of item|
+| url    |     string  |ad url|
 
-Response:
+####Response:
 
-Status-Code: 200 OK
+####Status-Code: 200 OK
 
 EXT (just an integer that represents the user id/extention)
 
@@ -48,16 +52,18 @@ add bidder:
 
 HTTP POST Request
 
-URL: /add_bid
+####URL: /add_bid
 
 QUERY PARAMETERS
 
-Name		Type	Description
-id			int 	identifier (and extention)
-name		string 	identifier (and extention)
-number      int     bidder tel number
-price       int     price of item
+| Name	|	Type	|Description|
+|-------|-----------|-----------|
+|id		|	int 	|identifier (and extention)|
+|name		|string 	|identifier (and extention)|
+|number   |   int    | bidder tel number|
+|price      | int   |  price of item|
 
-Response:
+
+####Response:
 
 Status-Code: 200 OK
