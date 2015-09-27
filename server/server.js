@@ -27,8 +27,15 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema);
 
+app.get('/', function(req, res)) {
+  res.sendFile(__dirname + '/index.html');
+}
 
-app.get('/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/new', function(req, res)) {
+  res.sendFile(__dirname + '/new.html');
+}
+
+app.get('/api/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.find({}, function(err, users) {
 		if (err) {
@@ -40,7 +47,7 @@ app.get('/', function(req, res) { //hosting this index.html page for tesging the
 	});
 });
 
-app.get('/url', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/url', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var url = req.query.url;
 	var bash_command = "ruby scripts/scrap.rb " + url;
@@ -68,8 +75,7 @@ app.get('/url', function(req, res) { //hosting this index.html page for tesging 
 	});
 });
 
-
-app.get('/get', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/get', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
@@ -87,7 +93,7 @@ app.get('/get', function(req, res) { //hosting this index.html page for tesging 
 	});
 });
 
-app.get('/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var user = new User({
 		id: id_global,
@@ -106,7 +112,7 @@ app.get('/create', function(req, res) { //hosting this index.html page for tesgi
 	});
 });
 
-app.get('/addBid', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/addBid', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id

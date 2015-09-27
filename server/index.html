@@ -119,6 +119,7 @@
   EXIT_DELAY = 300;
 
   $('#login').on('click', function() {
+    event.preventDefault();
     $('#authentication').velocity('transition.fadeOut', {
       duration: ENTER_DELAY,
       complete: function() { grab(); }
@@ -126,10 +127,12 @@
   });
 
   $('#add').on('click', function() {
+    event.preventDefault();
     $('#url').css('display', 'block').velocity({width: 800}, 500);
   })
 
   $('#new').on('click', function() {
+    event.preventDefault();
     $.ajax({
       type: 'POST',
       url: '/create',
