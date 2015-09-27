@@ -7,7 +7,7 @@ var server = http.createServer(app);
 server.listen(port);  //listen on port 80
 
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/test');
 
 
 app.get('/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
