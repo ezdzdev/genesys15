@@ -33,7 +33,7 @@ app.get('/', function(req, res) {
 
 app.get('/new', function(req, res) {
   res.sendFile(__dirname + '/new.html');
-})
+})git log
 
 app.get('/api/', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
@@ -144,7 +144,7 @@ app.get('/api/addBid', function(req, res) { //hosting this index.html page for t
 
 });
 
-app.get('/id_exists', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/api/id_exists', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	User.findOne({
 		id: req.query.id
