@@ -40,7 +40,7 @@ app.get('/get', function(req, res) { //hosting this index.html page for tesging 
 
 });
 
-app.post('/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
+app.get('/create', function(req, res) { //hosting this index.html page for tesging the client side. please comment out when running the API
 
 	var user = new User({
 		id: req.id_global,
