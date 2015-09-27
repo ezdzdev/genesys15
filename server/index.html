@@ -135,13 +135,13 @@
     event.preventDefault();
     $.ajax({
       type: 'POST',
-      url: '/create',
-      data: {url: $('#link').val() },
+      url: '/api/url',
+      data: { url: $('#link').val() },
       success: function(data) {
-        debugger;
+        grab(id);
       },
       error: function(data) {
-        debugger;
+        $('#error').openModal();
       }
     });
   });
@@ -199,7 +199,7 @@
       str += badge(data[i]);
       str += '</div><div class="collapsible-body">';
 
-      str += collection(data[i].currentBids);
+      str += collection(data[i].bidders);
       str += '</div></li>';
     }
     str += '</ul>'
@@ -207,8 +207,8 @@
   }
 
   function badge(data) {
-    if (data.currentBidsCount > 0)
-      return '<span class="badge">' + data.currentBidsCount + '</span>';
+    if (data.__v > 0)
+      return '<span class="badge">' + data.__v + '</span>';
     else
       return '';
   }

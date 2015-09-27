@@ -18,7 +18,8 @@ json = {
   :price => price,
   :date => date,
   :addr => addr,
-  :name => name
+  :name => name,
+  :url => url
 }
 
 puts json.to_json
