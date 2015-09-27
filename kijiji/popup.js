@@ -1,20 +1,37 @@
 window.onload= attach
+
+var urlRegex = new RegExp("https?:\/\/(www.)?kijiji\.ca")
 var url
+
 function attach(){
-	var checkPageButton = document.getElementById('checkPage');
+	var checkPageButton = document.getElementById('check');
 	checkPageButton.onclick=buttonReact;
 	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
 		url = tabs[0].url;
+		if (urlRegex.test(url)) {
+			/* ...if it matches, send a message specifying a callback too */
+			chrome.tabs.sendMessage(tabs[0].id, { text: "price" }, doStuffWithDOM);
+		}
 	});
 
 }
 
 function buttonReact(){
-	var domain_regex = new RegExp("https?:\/\/(www.)?kijiji\.ca")
-	res = domain_regex.test(url);
+		res = urlRegex.test(url);
+	if (res){
+		// is kijiji!
+		//let's start scraping!
+		//console.log();
 
-	console.log(res);
+	}
 }
+
+
+/* A function creator for callbacks */
+function doStuffWithDOM(domContent) {
+    console.log("I received the following DOM content:\n" + domContent);
+}
+
 
 function sentTab(tab){{
 	  d = document;
