@@ -1,17 +1,213 @@
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <!--Import Google Icon Font-->
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <!-- Compiled and minified CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
-      <!-- Compiled and minified JavaScript -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-      <div></div>
-    </body>
-  </html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js"></script>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+    <style>
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+      #authentication { margin: 40px; }
+      #login { margin-top: 20px; }
+      #content { margin: 60px; display: none; }
+      #loader { display: none; width: 25%; position: absolute;
+        top: 0; bottom: 0; left: 0; right: 0; margin: auto;}
+      #add { display: none; position: absolute; bottom: 50px; left: 50px; }
+      #url { display: none; position: absolute; bottom: 18px; left: 126px; width: 0;  }
+
+      /* label focus color */
+      .input-field input.validate:focus + label {
+        color: #9c27b0;
+      }
+      /* label underline focus color */
+      .input-field input.validate:focus {
+        border-bottom: 1px solid #9c27b0;
+        box-shadow: 0 1px 0 0 #9c27b0;
+      }
+      /* valid color */
+      .input-field input.valid {
+        border-bottom: 1px solid #e1bee7;
+        box-shadow: 0 1px 0 0 #e1bee7;
+      }
+      /* invalid color */
+      .input-field input.invalid {
+        border-bottom: 1px solid #4a148c;
+        box-shadow: 0 1px 0 0 #4a148c;
+      }
+      /* icon prefix focus color */
+      .input-field .prefix.active {
+        color: #9c27b0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper purple darken-1">
+        <a href="#" class="brand-logo right ">Looter</a>
+      </div>
+    </nav>
+
+    <div id="authentication">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="username" type="text" class="validate">
+              <label for="username">Username</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="password" type="password" class="validate">
+              <label for="password">Password</label>
+              <a id="login" class="waves-effect waves-light btn purple lighten-3 right"><input type="submit" style="display:none">Login</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="content"></div>
+
+    <div id="loader" class="progress orange lighten-3">
+      <div class="indeterminate orange"></div>
+    </div>
+
+    <a id="add" class="btn-floating btn-large waves-effect waves-light red">
+      <i class="material-icons">add</i>
+    </a>
+
+    <div id="url" class="row">
+      <form>
+        <div class="input-field col s12">
+          <input id="link" type="text" class="validate">
+          <label for="link">Link</label>
+          <input id="new" type="submit" style="display:none;"></div>
+        </div>
+      </form>
+    </div>
+
+    <div id="error" class="modal">
+      <div class="modal-content">
+        <h4>#TODO:</h4>
+        <p>Put some error text here</p>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#!"
+           class="modal-action modal-close waves-effect waves-green btn red">
+           :(</a>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+(function() {
+  MANUAL_DELAY = 1000;
+  ENTER_DELAY = 700;
+  EXIT_DELAY = 300;
+
+  $('#login').on('click', function() {
+    $('#authentication').velocity('transition.fadeOut', {
+      duration: ENTER_DELAY,
+      complete: function() { grab(); }
+    });
+  });
+
+  $('#add').on('click', function() {
+    $('#url').css('display', 'block').velocity({width: 800}, 500);
+  })
+
+  $('#new').on('click', function() {
+    $.ajax({
+      type: 'POST',
+      url: '/create',
+      data: {url: $('#link').val() },
+      success: function(data) {
+        debugger;
+      },
+      error: function(data) {
+        debugger;
+      }
+    });
+  });
+
+  function grab(id) {
+    $('#loader').velocity('transition.fadeIn', {
+      duration: EXIT_DELAY,
+      complete: function() {
+        $.ajax({
+          type: 'GET',
+          url: '/test.json',
+          success: function(data) {
+            setTimeout(function() {
+              $('#loader').velocity('transition.slideUpOut', {
+                duration: EXIT_DELAY,
+                complete: function() {
+                  $('#content').append(collapsible(data));
+                  $('.collapsible').collapsible();
+                  $('#content').velocity('transition.slideDownIn', ENTER_DELAY);
+                  $('#add').velocity('transition.slideDownIn', ENTER_DELAY);
+                }
+              });
+            }, MANUAL_DELAY);
+          },
+          error: function(data) {
+            $('#error').openModal();
+          }
+        })
+      }
+    });
+  }
+
+  function collection(data) {
+    var str = '<div class="collection">'
+    if (data.length > 0) {
+      for (var i = 0; i < data.length; i++) {
+        str += '<a href="#!" class="collection-item">' + data[i].name;
+        str += '</a>';
+      }
+    } else {
+      str += '<a href="#!" class="collection-item"> Nothing here :( </a>';
+    }
+    str += '</div>'
+    return str;
+  }
+
+  function collapsible(data) {
+    var str = '<ul id="collection" ' +
+                   'class="collapsible" ' +
+                   'data-collapsible="accordion" ' +
+                   'style="list-style-type: none;">';
+    for (var i = 0; i < data.length; i++) {
+      str += '<li>';
+      str += '<div class="collapsible-header">' + data[i].name;
+      str += badge(data[i]);
+      str += '</div><div class="collapsible-body">';
+
+      str += collection(data[i].currentBids);
+      str += '</div></li>';
+    }
+    str += '</ul>'
+    return str;
+  }
+
+  function badge(data) {
+    if (data.currentBidsCount > 0)
+      return '<span class="badge">' + data.currentBidsCount + '</span>';
+    else
+      return '';
+  }
+})();
+</script>
