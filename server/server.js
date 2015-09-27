@@ -1,7 +1,7 @@
 //socket IO and express setup
 var http = require('http');
 var express = require('express');
-var port = 3000;
+var port = 80;
 var app = express();
 var server = http.createServer(app);
 server.listen(port);  //listen on port 80
