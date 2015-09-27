@@ -8,17 +8,19 @@ server.listen(port); //listen on port 80
 var requestify = require('requestify');
 
 var mongoose = require('mongoose');
+var moment = require('moment');
 mongoose.connect('mongodb://localhost/test');
 
 var sys = require('sys');
 var exec = require('child_process').exec;
 var child;
 
-app.use(function (req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next()
+
+app.use(function(req, res, next) {
+	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+	res.header('Expires', '-1');
+	res.header('Pragma', 'no-cache');
+	next();
 });
 
 
@@ -194,13 +196,35 @@ app.get('/api/text', function(req, res) { //hosting this index.html page for tes
 
 			var message = "A buyer would like to puchase: " + user.name + "for" + user.price + ". Please contact: " + req.query.from;
 			var number = "6478655555";
-			var request = "http://69.204.255.92/api/text/send?to="+number+"&msg="+message;
+			var request = "http://69.204.255.92/api/text/send?to=" + number + "&msg=" + message;
 
 			requestify.get(request)
 				.then(function(response) {
 					// Get the response body (JSON parsed or jQuery object for XMLs)
 					console.log(request);
-					res.send("ok");
+					var now = moment();
+					var formatted = now.format('YYYY-MM-DD HH:mm:ss Z');
+					var phoneNumber = req.query.from;
+
+					if (req.query.from && req.query.from.indexOf('+1') === 0) {
+						phoneNumber = req.query.from.substring(2);
+					}
+					
+					user.bidders.push({
+						name: "same name",
+						tel: req.query.from,
+						time: formatted
+					});
+
+					user.save(function(err) {
+						if (err) {
+							res.send("not_ok");
+						} else {
+							res.send(user);
+							console.log(user);
+						}
+					});
+
 				});
 		}
 
